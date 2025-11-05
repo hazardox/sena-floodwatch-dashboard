@@ -22,9 +22,7 @@ const firebaseConfig = {
   storageBucket: "sena-floodwatch.firebasestorage.app",
   messagingSenderId: "653451923693",
   appId: "1:653451923693:web:23c6eb7c80491ec122bce4",
-  measurementId: "G-QBX2C5EZ0M"
 };
-
 
 /*
  * 3. INITIALIZE FIREBASE AND CHART
