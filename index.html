@@ -16,6 +16,17 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
     
     <script type="module" src="app.js"></script>
+<h1>SENA FloodWatch Dashboard</h1>
 
+    <div class="filter-controls">
+        <button id="btn-20" class="active">Last 20 Readings</button>
+        <button id="btn-1h">Last 1 Hour</button>
+        <button id="btn-6h">Last 6 Hours</button>
+        <button id="btn-24h">Last 24 Hours</button>
+    </div>
+    
+    <div class="chart-container">
+        <canvas id="waterLevelChart"></canvas>
+    </div>
 </body>
 </html>
