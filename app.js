@@ -75,35 +75,46 @@ const myChart = new Chart(ctx, {
  * This function will listen for a specific device and update the chart.
  */
 function listenToDevice(deviceId, datasetIndex) {
-    // This query gets the LAST 20 readings from the 'readings' list
+    
+    // --- DEBUG CHECKPOINT 1 ---
+    // First, let's see if this function is even being called correctly.
+    const path = `devices/${deviceId}/readings`;
+    console.log(`Attempting to listen to: ${path}`);
+
     const readingsRef = query(
-        ref(db, `devices/${deviceId}/readings`),
+        ref(db, path),
         limitToLast(20) // IMPORTANT: Limits to 20 data points
     );
 
     // onValue() listens for any changes in real-time
     onValue(readingsRef, (snapshot) => {
+        
+        // --- DEBUG CHECKPOINT 2 ---
+        // Does the data exist at that path?
+        console.log(`Snapshot for ${deviceId} exists?`, snapshot.exists());
+        
         if (!snapshot.exists()) {
-            console.log(`No data for ${deviceId}`);
-            return;
+            return; // This is probably what's happening
         }
 
-        const readings = snapshot.val(); // This is an object like {-M...: {dist, time}, -M...: {dist, time}}
+        // --- DEBUG CHECKPOINT 3 ---
+        // If it exists, WHAT is the data?
+        console.log(`Data received for ${deviceId}:`, snapshot.val());
+
+        const readings = snapshot.val();
         
         const newLabels = [];
         const newData = [];
 
-        // Loop through the object of readings and put them in arrays
         for (const key in readings) {
             const reading = readings[key];
-            newLabels.push(new Date(reading.time).toLocaleTimeString()); // Format time for X-axis
-            newData.push(reading.distance); // Get distance for Y-axis
+            newLabels.push(new Date(reading.time).toLocaleTimeString());
+            newData.push(reading.distance);
         }
 
-        // Update the chart with the new data
-        myChart.data.labels = newLabels; // Set the X-axis labels
-        myChart.data.datasets[datasetIndex].data = newData; // Set the Y-axis data
-        myChart.update(); // Re-draw the chart
+        myChart.data.labels = newLabels;
+        myChart.data.datasets[datasetIndex].data = newData;
+        myChart.update();
     });
 }
 
